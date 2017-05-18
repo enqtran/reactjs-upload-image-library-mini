@@ -7,7 +7,7 @@ class Home extends Component {
         let data = localStorage.getItem('recipies');
 
         this.state = {
-            recipies: (data !== '') ? JSON.parse(data) : [],
+            recipies: (data !== '' && data !== null) ? JSON.parse(data) : [],
         };
         this.clearAllData = this.clearAllData.bind(this);
     }
@@ -32,29 +32,31 @@ class Home extends Component {
                 <br/>
 
                 <div className="row">
-                    {
-                        this.state.recipies.map((item, i) => {
-                            return (
-                                <div className="col-lg-4" key={i}>
-                                    <div className="thumbnail">
-                                        <a target="_blank" href={item.images} >
-                                            <img className="img-responsive" src={item.images} alt="Generic" />
-                                        </a>
+                    {   
+                        (this.state.recipies !== null && this.state.recipies !== '') ? 
+                            this.state.recipies.map((item, i) => {
+                                return (
+                                    <div className="col-lg-4" key={i}>
+                                        <div className="thumbnail">
+                                            <a target="_blank" href={item.images} >
+                                                <img className="img-responsive" src={item.images} alt="Generic" />
+                                            </a>
+                                        </div>
+                                        <h2 className="text-center">{item.name}</h2>
+                                        <div className="text-center">{item.description}</div>
+                                        <div className="text-center">
+                                            <ul className="list-group">
+                                                {item.ingredients.map((tem, j) => {
+                                                    return (
+                                                        <li className="list-group-item" key={i}>{tem.quantity} - {tem.ingredient}</li>
+                                                    );
+                                                })}
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <h2 className="text-center">{item.name}</h2>
-                                    <div className="text-center">{item.description}</div>
-                                    <div className="text-center">
-                                        <ul className="list-group">
-                                            {item.ingredients.map((tem, j) => {
-                                                return (
-                                                    <li className="list-group-item" key={i}>{tem.quantity} - {tem.ingredient}</li>
-                                                );
-                                            })}
-                                        </ul>
-                                    </div>
-                                </div>
-                            );
-                        })
+                                );
+                            })
+                        : null
                     }
                 </div>
             </div>

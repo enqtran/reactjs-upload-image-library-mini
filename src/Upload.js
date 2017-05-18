@@ -51,7 +51,6 @@ class Upload extends Component {
                     uploadedFileCloudinaryUrl: response.body.secure_url,
                     uploaded: false,
                 });
-                console.log('upload done');
             }
         });
     }
@@ -69,7 +68,6 @@ class Upload extends Component {
 
             this.setState({ recipies });
             localStorage.setItem('recipies', JSON.stringify(recipies));
-            console.log(recipies);
             this.props.history.push('/');
         } else {
             alert('Missing content & image !');
@@ -135,7 +133,7 @@ class Upload extends Component {
                             </div>
 
                             <Ingredient addIngredient={(quantity, ingredient) => { this.addIngredient(quantity, ingredient) }} />
-                                
+
                             <IngredientList recipie={this.state.newRecipie} />
 
                             <button type="button" onClick={this.upLoadImage} className="btn btn-primary">Upload</button>
