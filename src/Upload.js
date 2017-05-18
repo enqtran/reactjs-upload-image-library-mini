@@ -13,7 +13,7 @@ class Upload extends Component {
         let data = localStorage.getItem('recipies');
 
         this.state = {
-            recipies: (data !== '') ? JSON.parse(data) : [],
+            recipies: (data !== '' && data !== null) ? JSON.parse(data) : [],
             newRecipie: {
                 name: 'New Recipie',
                 description: 'Description',
