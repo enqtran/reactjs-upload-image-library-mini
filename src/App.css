@@ -50,9 +50,10 @@
 }
 
 footer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
+    z-index: 9999;
     width: 100%;
     padding: 10px 0;
         background-color: #222;
@@ -61,7 +62,7 @@ footer {
 }
 
 .notifi {
-    position: absolute;
+    position: fixed;
     left: 20px;
     bottom: 40px;
     display: none;
