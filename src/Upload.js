@@ -31,22 +31,29 @@ class Upload extends Component {
     }
 
     handleImageUpload(file) {
-        let upload = request.post(CLOUDINARY_UPLOAD_URL)
-            .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-            .field('file', file);
+        if (file !== undefined) {
+            let upload = request.post(CLOUDINARY_UPLOAD_URL)
+                .field('upload_preset', CLOUDINARY_UPLOAD_PRESET)
+                .field('file', file);
 
-        upload.end((err, response) => {
-            if (err) {
-                console.error(err);
-            }
+            upload.end((err, response) => {
+                if (err) {
+                    console.error(err);
+                }
 
-            if (response.body.secure_url !== '') {
-                this.setState({
-                    uploadedFileCloudinaryUrl: response.body.secure_url,
-                    uploaded: false,
-                });
-            }
-        });
+                if (response.body.secure_url !== '') {
+                    this.setState({
+                        uploadedFileCloudinaryUrl: response.body.secure_url,
+                        uploaded: false,
+                    });
+                }
+            });
+        } else {
+            this.setState({
+                uploaded: false,
+            });
+            alert('File not is image');
+        }
     }
 
     upLoadImage() {
@@ -56,7 +63,7 @@ class Upload extends Component {
             this.setState({ newRecipie });
 
             let recipies = this.state.recipies;
-            recipies.push(newRecipie);
+            recipies.unshift(newRecipie);
 
             this.setState({ recipies });
             localStorage.setItem('recipies', JSON.stringify(recipies));
@@ -83,8 +90,8 @@ class Upload extends Component {
                                                 accept="image/*"
                                                 onDrop={this.onImageDrop}>
                                                 <p className="text-center">Drop an image or click to select a file to upload.</p>
-                                            </Dropzone>) 
-                                            : (<div className="upload-from text-center"><img src="loading.gif" alt="loading" /></div>)
+                                            </Dropzone>)
+                                                : (<div className="upload-from text-center"><img src="loading.gif" alt="loading" /></div>)
                                         }
 
                                     </div>

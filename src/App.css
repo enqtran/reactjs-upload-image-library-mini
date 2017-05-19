@@ -17,6 +17,9 @@
     background-size: cover;
     background-repeat: no-repeat;
 }
+.thumbnailss:hover{
+    opacity: 0.9;
+}
 
 .item-image {
     margin-bottom: 40px;

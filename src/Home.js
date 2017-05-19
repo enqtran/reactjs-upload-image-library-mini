@@ -35,19 +35,22 @@ class Home extends Component {
                                 return (
                                     <div className="col-md-4 col-lg-4 col-sm-4 col-xs-12" key={i}>
                                         <div className="item-image">
-                                            <a target="_blank" href={item.images} >
+                                            <a data-fancybox="group" href={item.images} >
                                                 <div className="thumbnailss" style={{ backgroundImage: `url(${Background})` }}>
-                                                    {/*<img className="img-responsive" src={item.images} alt="Generic" />*/}
                                                 </div>
+                                                {/*<img src={item.images} alt="slide" />*/}
                                             </a>
                                             <div className="input-group">
                                                 <input type="text" className="form-control" value={item.images} readOnly />
                                                 <span className="input-group-btn">
-                                                    <button 
-                                                    className="btn btn-success copyclipboard" 
-                                                    type="button" 
-                                                    data-clipboard-text={item.images} 
+                                                    <button
+                                                        className="btn btn-success copyclipboard"
+                                                        type="button"
+                                                        data-clipboard-text={item.images}
                                                     >Copie</button>
+                                                    <a className="btn btn-info" target="_blank" href={item.images} >
+                                                        View
+                                                    </a>
                                                 </span>
                                             </div>
                                         </div>
