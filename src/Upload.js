@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import Dropzone from 'react-dropzone';
 import request from 'superagent';
-import Ingredient from './Ingredient';
-import IngredientList from './IngredientList';
 
 const CLOUDINARY_UPLOAD_PRESET = 'lnmbsj4r';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/enqtran/upload';
@@ -14,11 +12,7 @@ class Upload extends Component {
 
         this.state = {
             recipies: (data !== '' && data !== null) ? JSON.parse(data) : [],
-            newRecipie: {
-                name: 'New Recipie',
-                description: 'Description',
-                ingredients: []
-            },
+            newRecipie: {},
             uploadedFileCloudinaryUrl: '',
             uploaded: false
         };
@@ -56,10 +50,8 @@ class Upload extends Component {
     }
 
     upLoadImage() {
-        if (this.state.uploadedFileCloudinaryUrl !== '' && this.name.value !== '' && this.description.value !== '') {
+        if (this.state.uploadedFileCloudinaryUrl !== '') {
             let newRecipie = this.state.newRecipie;
-            newRecipie.name = this.name.value;
-            newRecipie.description = this.description.value;
             newRecipie.images = this.state.uploadedFileCloudinaryUrl;
             this.setState({ newRecipie });
 
@@ -70,14 +62,8 @@ class Upload extends Component {
             localStorage.setItem('recipies', JSON.stringify(recipies));
             this.props.history.push('/');
         } else {
-            alert('Missing content & image !');
+            alert('Missing image !');
         }
-    }
-
-    addIngredient(quantity, ingredient) {
-        let newRecipie = this.state.newRecipie;
-        newRecipie.ingredients.push({ quantity, ingredient });
-        this.setState({ newRecipie });
     }
 
     render() {
@@ -85,58 +71,38 @@ class Upload extends Component {
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">
-                        <h1>Upload</h1>
+                        <h1>UPLOAD IMAGE</h1>
                         <form>
                             <div className="form-group">
                                 <div className="row">
-                                    <div className="col-md-4">
-                                        {(this.state.uploaded === false) ? (<Dropzone
-                                            multiple={false}
-                                            accept="image/*"
-                                            onDrop={this.onImageDrop}>
-                                            <p className="text-center">Drop an image or click to select a file to upload.</p>
-                                        </Dropzone>) : (<div>Uploading...</div>)}
+                                    <div className="col-md-6">
+                                        {
+                                            (this.state.uploaded === false) ? (<Dropzone
+                                                className="upload-from"
+                                                multiple={false}
+                                                accept="image/*"
+                                                onDrop={this.onImageDrop}>
+                                                <p className="text-center">Drop an image or click to select a file to upload.</p>
+                                            </Dropzone>) 
+                                            : (<div className="upload-from text-center"><img src="loading.gif" alt="loading" /></div>)
+                                        }
 
                                     </div>
-                                    <div className="col-md-8">
+                                    <div className="col-md-6">
                                         <div >
                                             {this.state.uploadedFileCloudinaryUrl === '' ? null :
                                                 <div>
-                                                    <p>{this.state.uploadedFile.name}</p>
-                                                    <img className="img-responsive" src={this.state.uploadedFileCloudinaryUrl} alt={this.state.uploadedFile.name} />
-                                                </div>}
+                                                    <img className="img-responsive full-img" src={this.state.uploadedFileCloudinaryUrl} alt={this.state.uploadedFile.name} />
+                                                    <p>Image name: {this.state.uploadedFile.name}</p>
+                                                </div>
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div className="clearfix"></div>
 
-                            <div className="form-group">
-                                <label htmlFor="name">Name</label>
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    id="name"
-                                    placeholder="Name"
-                                    ref={(input) => { this.name = input }}
-                                />
-                            </div>
-
-                            <div className="form-group">
-                                <label htmlFor="description">Description</label>
-                                <textarea
-                                    className="form-control"
-                                    id="description"
-                                    placeholder="Enter a brief description"
-                                    ref={(input) => { this.description = input }}
-                                />
-                            </div>
-
-                            <Ingredient addIngredient={(quantity, ingredient) => { this.addIngredient(quantity, ingredient) }} />
-
-                            <IngredientList recipie={this.state.newRecipie} />
-
-                            <button type="button" onClick={this.upLoadImage} className="btn btn-primary">Upload</button>
+                            <button type="button" onClick={this.upLoadImage} className="btn btn-primary btn-lg">Upload</button>
                         </form>
                     </div>
                 </div>
