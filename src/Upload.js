@@ -13,7 +13,7 @@ class Upload extends Component {
         this.state = {
             recipies: (data !== '' && data !== null) ? JSON.parse(data) : [],
             newRecipie: {},
-            uploadedFileCloudinaryUrl: '',
+            uploadedFileCloudinaryUrl: [],
             uploaded: false
         };
 
@@ -27,7 +27,9 @@ class Upload extends Component {
             uploaded: true,
         });
 
-        this.handleImageUpload(files[0]);
+        for (let i = 0; i < files.length; i++) {
+            this.handleImageUpload(files[i]);
+        }
     }
 
     handleImageUpload(file) {
@@ -43,7 +45,7 @@ class Upload extends Component {
 
                 if (response.body.secure_url !== '') {
                     this.setState({
-                        uploadedFileCloudinaryUrl: response.body.secure_url,
+                        uploadedFileCloudinaryUrl: this.state.uploadedFileCloudinaryUrl.concat(response.body.secure_url),
                         uploaded: false,
                     });
                 }
@@ -66,6 +68,8 @@ class Upload extends Component {
             recipies.unshift(newRecipie);
 
             this.setState({ recipies });
+
+
             localStorage.setItem('recipies', JSON.stringify(recipies));
             this.props.history.push('/');
         } else {
@@ -86,7 +90,7 @@ class Upload extends Component {
                                         {
                                             (this.state.uploaded === false) ? (<Dropzone
                                                 className="upload-from"
-                                                multiple={false}
+                                                multiple={true}
                                                 accept="image/*"
                                                 onDrop={this.onImageDrop}>
                                                 <p className="text-center">Drop an image or click to select a file to upload.</p>
@@ -96,12 +100,14 @@ class Upload extends Component {
 
                                     </div>
                                     <div className="col-md-6">
-                                        <div >
-                                            {this.state.uploadedFileCloudinaryUrl === '' ? null :
-                                                <div>
-                                                    <img className="img-responsive full-img" src={this.state.uploadedFileCloudinaryUrl} alt={this.state.uploadedFile.name} />
-                                                    <p>Image name: {this.state.uploadedFile.name}</p>
-                                                </div>
+                                        <div className="row">
+                                            {
+                                                (this.state.uploadedFileCloudinaryUrl.length === 0) ? null :
+                                                    this.state.uploadedFileCloudinaryUrl.map((element, index) => {
+                                                        return (<div key={index} className="col-md-4">
+                                                            <img className="img-responsive" src={element} alt={element} />
+                                                        </div>)
+                                                    })
                                             }
                                         </div>
                                     </div>
